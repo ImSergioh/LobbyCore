@@ -54,6 +54,7 @@ public class TabManager {
     }
 
     public static void updateTagTeams(Player player){
+        String pPrefix = tagsManager.getPrefix(player);
         Scoreboard scoreboard = player.getScoreboard();
         Objective obj;
         if(scoreboard.getObjective("tags") == null) {
@@ -71,12 +72,17 @@ public class TabManager {
             }
             String prefix = tagsManager.getPrefix(p);
             String suffix = tagsManager.getSuffix(p);
-            if(prefix.length() >= 2){
-                team.setPrefix(prefix);
+
+            if(prefix.length() >= 4){
+                prefix = prefix+" ";
             }
-            if(suffix.length() >= 2){
-                team.setSuffix(suffix);
+
+            if(suffix.length() >= 4){
+                suffix = " "+suffix;
             }
+
+            team.setPrefix(prefix);
+            team.setSuffix(suffix);
 
             team.addPlayer(p);
         });

@@ -16,7 +16,7 @@ public class AutoSpawnManager {
             task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    Bukkit.getOnlinePlayers().stream().parallel().forEach(player -> {
+                    Bukkit.getOnlinePlayers().forEach(player -> {
                         double altura = player.getLocation().getY();
                         if(altura <= max){
                             player.performCommand("spawn");
