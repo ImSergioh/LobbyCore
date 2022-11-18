@@ -1,0 +1,8 @@
+name: LobbyCore
+version: '${project.version}'
+main: me.imsergioh.lobbycore.LobbyCore
+authors: [ ImSergioh ]
+description: LobbyCore for lobbies hehe
+
+commands:
+  spawn:
