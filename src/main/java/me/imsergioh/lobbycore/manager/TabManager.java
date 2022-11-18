@@ -69,12 +69,12 @@ public class TabManager {
             } else {
                 team = scoreboard.getTeam(p.getName());
             }
-            String prefix = tagsManager.getPrefix(player);
-            String suffix = tagsManager.getSuffix(player);
-            if(!prefix.equals("")){
+            String prefix = tagsManager.getPrefix(p);
+            String suffix = tagsManager.getSuffix(p);
+            if(prefix.length() >= 2){
                 team.setPrefix(prefix);
             }
-            if(!suffix.equals("") || !suffix.equals(" ")){
+            if(suffix.length() >= 2){
                 team.setSuffix(suffix);
             }
 
