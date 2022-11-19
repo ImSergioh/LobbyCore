@@ -49,6 +49,7 @@ public final class LobbyCore extends JavaPlugin {
         pm.registerEvents(new CustomCommandsEvents(), plugin);
         pm.registerEvents(new LobbyEvents(), plugin);
         pm.registerEvents(new PluginItemEvents(), plugin);
+        pm.registerEvents(new ChatEvent(), plugin);
 
         getCommand("spawn").setExecutor(new spawn());
 

@@ -36,7 +36,8 @@ public class ConfigManager {
                 .registerDefault("customTagsEnabled", true)
                 .registerDefault("customTagsConfigName", "tags.yml")
                 .registerDefault("autoSpawnManagerEnabled", false)
-                .registerDefault("autoSpawnHeight", 30);
+                .registerDefault("autoSpawnHeight", 30)
+                .registerDefault("chatFormat", "%luckperms_prefix%%1$s%luckperms_suffix%&f: &7%2$s");
         mainConfig.saveConfig();
         SpawnManager.setLobbyWorlds(mainConfig.config().getStringList("lobbyWorlds"));
     }
