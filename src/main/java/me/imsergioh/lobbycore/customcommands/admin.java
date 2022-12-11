@@ -2,8 +2,10 @@ package me.imsergioh.lobbycore.customcommands;
 
 import me.imsergioh.lobbycore.LobbyCore;
 import me.imsergioh.lobbycore.instance.CustomCommand;
+import me.imsergioh.lobbycore.instance.PluginConfig;
 import me.imsergioh.lobbycore.manager.AdminManager;
 import me.imsergioh.lobbycore.manager.SpawnManager;
+import me.imsergioh.lobbycore.util.ChatUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -26,6 +28,13 @@ public class admin implements CustomCommand {
                     sender.sendMessage("Especifica un jugador.");
                 }
                 return true;
+            }
+
+            if(args.length >= 1){
+                if(args[0].equalsIgnoreCase("reload")){
+                    PluginConfig.reloadAllConfigs();
+                    sender.sendMessage(ChatUtil.chatColor("&aRecargado correctamente!"));
+                }
             }
 
             try {

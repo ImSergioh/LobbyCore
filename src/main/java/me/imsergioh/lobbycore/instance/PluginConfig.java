@@ -6,9 +6,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 
 public class PluginConfig {
 
+
+    private static final HashSet<PluginConfig> registered = new HashSet<>();
     private final JavaPlugin plugin;
 
     private final File file;
@@ -21,6 +24,7 @@ public class PluginConfig {
             setupFile();
         }
         reloadConfig();
+        registered.add(this);
     }
 
     public PluginConfig registerDefault(String path, Object value){
@@ -58,6 +62,10 @@ public class PluginConfig {
         }
     }
 
-
+    public static void reloadAllConfigs(){
+        for(PluginConfig pluginConfig : registered){
+            pluginConfig.reloadConfig();
+        }
+    }
 
 }

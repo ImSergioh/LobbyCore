@@ -17,6 +17,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
@@ -41,20 +42,6 @@ public class LobbyEvents implements Listener {
             PluginInventory pluginInventory = plugin.getInventoriesManager().get(ConfigManager.getMainConfig().config().getString("joinItemsInventoriesName"));
             pluginInventory.setInventory(event.getPlayer());
         }
-
-        if(ConfigManager.isConfigOnConfig("mainScoreboardEnabled")){
-            PluginScoreboard pluginScoreboard = plugin.getScoreboardManager().getFromName(ConfigManager.getMainConfig().config().getString("mainScoreboardName"));
-            pluginScoreboard.register(event.getPlayer());
-        }
-
-
-        if(ConfigManager.isConfigOnConfig("customTagsEnabled")){
-            TabManager.updateTagTeams(event.getPlayer());
-        }
-
-        if(plugin.getTabManager() != null){
-            plugin.getTabManager().sendTablist(event.getPlayer());
-        }
     }
 
     @EventHandler
@@ -72,6 +59,16 @@ public class LobbyEvents implements Listener {
         if(event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             event.setCancelled(AdminManager.cancelLobbyEvent(player, "cancelDamage"));
+        }
+    }
+
+    @EventHandler
+    public void onDamage(FoodLevelChangeEvent event){
+        if(event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            event.setCancelled(AdminManager.cancelLobbyEvent(player, "cancelDamage"));
+            player.setHealth(20);
+            player.setFoodLevel(20);
         }
     }
 

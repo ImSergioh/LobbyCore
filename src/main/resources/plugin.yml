@@ -3,6 +3,9 @@ version: '${project.version}'
 main: me.imsergioh.lobbycore.LobbyCore
 authors: [ ImSergioh ]
 description: LobbyCore for lobbies hehe
+depend:
+  - PlaceholderAPI
+  - SmartCoreSpigot
 
 commands:
   spawn:

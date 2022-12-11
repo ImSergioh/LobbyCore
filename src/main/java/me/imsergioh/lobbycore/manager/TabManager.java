@@ -6,6 +6,7 @@ import me.imsergioh.lobbycore.util.ChatUtil;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
+import org.apache.logging.log4j.core.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -15,6 +16,8 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import us.smartmc.smartcorespigot.SmartCoreSpigot;
+import us.smartmc.smartcorespigot.instance.CorePlayer;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -34,19 +37,25 @@ public class TabManager {
         List<String> list = new ArrayList<>();
         list.add("Line1");
         list.add("Line2");
-        pluginConfig.registerDefault("tablistHeader", list);
         List<String> list1 = list;
         list1.add("Footer");
-        pluginConfig.registerDefault("tablistFooter", list1);
+
+        for(String langName : SmartCoreSpigot.getPlugin().getLanguageHandler().langNames()){
+            pluginConfig.registerDefault("tablistHeader_"+langName, list);
+            pluginConfig.registerDefault("tablistFooter_"+langName, list1);
+        }
+
         pluginConfig.saveConfig();
 
         task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             @Override
             public void run() {
                 Bukkit.getOnlinePlayers().forEach(player -> {
-                    sendTablist(player);
-                    if(ConfigManager.isConfigOnConfig("customTagsEnabled")){
-                        updateTagTeams(player);
+                    if(CorePlayer.get(player) != null && CorePlayer.get(player).getLanguage() != null) {
+                        sendTablist(player);
+                        if (ConfigManager.isConfigOnConfig("customTagsEnabled")) {
+                            updateTagTeams(player);
+                        }
                     }
                 });
             }
@@ -54,7 +63,6 @@ public class TabManager {
     }
 
     public static void updateTagTeams(Player player){
-        String pPrefix = tagsManager.getPrefix(player);
         Scoreboard scoreboard = player.getScoreboard();
         Objective obj;
         if(scoreboard.getObjective("tags") == null) {
@@ -72,17 +80,14 @@ public class TabManager {
             }
             String prefix = tagsManager.getPrefix(p);
             String suffix = tagsManager.getSuffix(p);
-
-            if(prefix.length() >= 4){
-                prefix = prefix+" ";
-            }
-
-            if(suffix.length() >= 4){
-                suffix = " "+suffix;
-            }
+            String playerListName = tagsManager.getPlayerListName(p);
 
             team.setPrefix(prefix);
             team.setSuffix(suffix);
+            player.setPlayerListName(playerListName);
+            player.setDisplayName(playerListName);
+            player.setCustomName(playerListName);
+            player.setCustomNameVisible(true);
 
             team.addPlayer(p);
         });
@@ -93,9 +98,9 @@ public class TabManager {
         PlayerConnection connection = craftplayer.getHandle().playerConnection;
         String headerStr = "";
         String footerStr = "";
-        for(String all : config.getStringList("tablistHeader")) {
+        for(String all : config.getStringList("tablistHeader_"+ CorePlayer.get(p).getLanguage().getName())) {
             headerStr += all+"\n";
-        } for(String all : config.getStringList("tablistFooter")) {
+        } for(String all : config.getStringList("tablistFooter_"+ CorePlayer.get(p).getLanguage().getName())) {
             footerStr += all+"\n";
         }
         headerStr = replaceLast(headerStr, "\n", "");

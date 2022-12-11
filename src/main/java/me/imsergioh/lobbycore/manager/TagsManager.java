@@ -15,7 +15,8 @@ public class TagsManager {
         this.plugin = plugin;
         this.config = pluginConfig.config();
         pluginConfig.registerDefault("prefix", "%luckperms_prefix%")
-                .registerDefault("suffix","%luckperms_suffix%");
+                .registerDefault("suffix","%luckperms_suffix%")
+                .registerDefault("playerListName", "%sc_tag%%player_name%");
         pluginConfig.saveConfig();
     }
 
@@ -29,5 +30,9 @@ public class TagsManager {
 
     public String getSuffix(Player p) {
         return ChatUtil.chatColorWithVariables(p, config.getString("suffix"));
+    }
+
+    public String getPlayerListName(Player p) {
+        return ChatUtil.chatColorWithVariables(p, config.getString("playerListName"));
     }
 }

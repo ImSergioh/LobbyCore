@@ -61,5 +61,4 @@ public class PlayerScoreboard {
         }
         pluginScoreboard.unregister(player);
     }
-
 }
