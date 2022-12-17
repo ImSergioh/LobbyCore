@@ -16,17 +16,17 @@ public final class LobbyCore extends JavaPlugin {
     private static LobbyCore plugin;
 
     private SpawnManager spawnManager;
-    private InventoriesManager inventoriesManager;
     private ScoreboardManager scoreboardManager;
     private TabManager tabManager;
     private TagsManager tagsManager;
+
+    private LobbyMenuHandler lobbyMenuHandler;
 
     @Override
     public void onEnable() {
         plugin = this;
         ConfigManager.setup();
         spawnManager = new SpawnManager("mainSpawn.yml");
-        inventoriesManager = new InventoriesManager(plugin);
         scoreboardManager = new ScoreboardManager(plugin);
         new AutoSpawnManager();
 
@@ -44,11 +44,14 @@ public final class LobbyCore extends JavaPlugin {
             tabManager = new TabManager(plugin, config);
         }
 
+        if(ConfigManager.isConfigOnConfig("joinItemsEnabled")){
+            lobbyMenuHandler = new LobbyMenuHandler();
+        }
+
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SpawnEvents(), plugin);
         pm.registerEvents(new CustomCommandsEvents(), plugin);
         pm.registerEvents(new LobbyEvents(), plugin);
-        pm.registerEvents(new PluginItemEvents(), plugin);
         pm.registerEvents(new ChatEvent(), plugin);
         pm.registerEvents(new ScoreboardEvent(), plugin);
         pm.registerEvents(new TabEvent(), plugin);
@@ -62,9 +65,8 @@ public final class LobbyCore extends JavaPlugin {
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
-    @Override
-    public void onDisable() {
-
+    public LobbyMenuHandler getLobbyMenuHandler() {
+        return lobbyMenuHandler;
     }
 
     public TagsManager getTagsManager() {
@@ -77,10 +79,6 @@ public final class LobbyCore extends JavaPlugin {
 
     public ScoreboardManager getScoreboardManager() {
         return scoreboardManager;
-    }
-
-    public InventoriesManager getInventoriesManager() {
-        return inventoriesManager;
     }
 
     public SpawnManager getSpawnManager() {

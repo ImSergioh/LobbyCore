@@ -28,7 +28,7 @@ public class ConfigManager {
                 .registerDefault("customGamemodeSet", false)
                 .registerDefault("customGamemode", 2)
                 .registerDefault("joinItemsEnabled", false)
-                .registerDefault("joinItemsInventoriesName", "joinitems.yml")
+                .registerDefault("joinItemsMenuPath", "main")
                 .registerDefault("mainScoreboardEnabled", true)
                 .registerDefault("mainScoreboardName", "mainScoreboard.yml")
                 .registerDefault("customTabEnabled", true)

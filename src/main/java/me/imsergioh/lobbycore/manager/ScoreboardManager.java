@@ -1,7 +1,6 @@
 package me.imsergioh.lobbycore.manager;
 
 import me.imsergioh.lobbycore.instance.PluginConfig;
-import me.imsergioh.lobbycore.instance.PluginInventory;
 import me.imsergioh.lobbycore.instance.PluginScoreboard;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;

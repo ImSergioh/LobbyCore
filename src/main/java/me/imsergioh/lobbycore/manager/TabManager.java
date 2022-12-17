@@ -84,11 +84,7 @@ public class TabManager {
 
             team.setPrefix(prefix);
             team.setSuffix(suffix);
-            player.setPlayerListName(playerListName);
-            player.setDisplayName(playerListName);
-            player.setCustomName(playerListName);
-            player.setCustomNameVisible(true);
-
+            p.setPlayerListName(playerListName);
             team.addPlayer(p);
         });
     }

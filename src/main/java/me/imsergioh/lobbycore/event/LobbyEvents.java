@@ -1,12 +1,9 @@
 package me.imsergioh.lobbycore.event;
 
 import me.imsergioh.lobbycore.LobbyCore;
-import me.imsergioh.lobbycore.instance.PluginInventory;
-import me.imsergioh.lobbycore.instance.PluginScoreboard;
 import me.imsergioh.lobbycore.manager.AdminManager;
 import me.imsergioh.lobbycore.manager.ConfigManager;
-import me.imsergioh.lobbycore.manager.SpawnManager;
-import me.imsergioh.lobbycore.manager.TabManager;
+import me.imsergioh.spigotcore.handler.MenuHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -20,6 +17,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
+import us.smartmc.smartcorespigot.event.custominstances.PlayerLanguageChangedEvent;
+import us.smartmc.smartcorespigot.event.custominstances.PlayerReceivedBackendDataEvent;
 
 public class LobbyEvents implements Listener {
 
@@ -28,6 +27,7 @@ public class LobbyEvents implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
         event.setJoinMessage("");
+        Player player = event.getPlayer();
 
         if(ConfigManager.isConfigOnConfig("customGamemodeSet")){
             Bukkit.getScheduler().runTaskLater(LobbyCore.getPlugin(), new Runnable() {
@@ -37,11 +37,20 @@ public class LobbyEvents implements Listener {
                 }
             },5);
         }
+    }
 
-        if(ConfigManager.isConfigOnConfig("joinItemsEnabled")) {
-            PluginInventory pluginInventory = plugin.getInventoriesManager().get(ConfigManager.getMainConfig().config().getString("joinItemsInventoriesName"));
-            pluginInventory.setInventory(event.getPlayer());
-        }
+    @EventHandler
+    public void onCorePlayerLoad(PlayerReceivedBackendDataEvent event){
+        Player player = event.getCorePlayer().getPlayer();
+
+        updateJoinItemInventory(player);
+    }
+
+    @EventHandler
+    public void changeInvFromLang(PlayerLanguageChangedEvent event){
+        Player player = event.getCorePlayer().getPlayer();
+
+        updateJoinItemInventory(player);
     }
 
     @EventHandler
@@ -120,6 +129,16 @@ public class LobbyEvents implements Listener {
         Player player = event.getPlayer();
 
         event.setCancelled(AdminManager.cancelLobbyEvent(player, "cancelBlockPlace"));
+    }
+
+    private static void updateJoinItemInventory(Player player){
+        if(ConfigManager.isConfigOnConfig("joinItemsEnabled")) {
+            String menuPath = ConfigManager.getMainConfig().config().getString("joinItemsMenuPath");
+            MenuHandler mainHandler = MenuHandler.getHandler(menuPath);
+            player.getInventory().clear();
+            plugin.getLobbyMenuHandler().getCoreMenu(mainHandler, player, "joinItems").setInventory(player);
+            player.updateInventory();
+        }
     }
 
 }
