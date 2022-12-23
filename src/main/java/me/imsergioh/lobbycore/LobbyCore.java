@@ -1,22 +1,25 @@
 package me.imsergioh.lobbycore;
 
+import me.imsergioh.coreclient.util.ClientUtil;
 import me.imsergioh.lobbycore.command.spawn;
 import me.imsergioh.lobbycore.customcommands.admin;
+import me.imsergioh.lobbycore.customcommands.pvpzoneleave;
 import me.imsergioh.lobbycore.customcommands.setspawn;
 import me.imsergioh.lobbycore.customcommands.test;
 import me.imsergioh.lobbycore.event.*;
 import me.imsergioh.lobbycore.instance.PluginConfig;
+import me.imsergioh.lobbycore.instance.PvPZone;
 import me.imsergioh.lobbycore.manager.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import us.smartmc.smartcorespigot.SmartCoreSpigot;
 
 public final class LobbyCore extends JavaPlugin {
 
     private static LobbyCore plugin;
 
     private SpawnManager spawnManager;
-    private ScoreboardManager scoreboardManager;
     private TabManager tabManager;
     private TagsManager tagsManager;
 
@@ -27,7 +30,6 @@ public final class LobbyCore extends JavaPlugin {
         plugin = this;
         ConfigManager.setup();
         spawnManager = new SpawnManager("mainSpawn.yml");
-        scoreboardManager = new ScoreboardManager(plugin);
         new AutoSpawnManager();
 
         if(ConfigManager.isConfigOnConfig("setCustomTime")){
@@ -48,12 +50,15 @@ public final class LobbyCore extends JavaPlugin {
             lobbyMenuHandler = new LobbyMenuHandler();
         }
 
+        if(ConfigManager.isConfigOnConfig("pvpzones")){
+            PvPZone.setup();
+        }
+
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SpawnEvents(), plugin);
         pm.registerEvents(new CustomCommandsEvents(), plugin);
         pm.registerEvents(new LobbyEvents(), plugin);
         pm.registerEvents(new ChatEvent(), plugin);
-        pm.registerEvents(new ScoreboardEvent(), plugin);
         pm.registerEvents(new TabEvent(), plugin);
 
         getCommand("spawn").setExecutor(new spawn());
@@ -61,6 +66,8 @@ public final class LobbyCore extends JavaPlugin {
         CommandHandler.registerCommand("setspawn", new setspawn());
         CommandHandler.registerCommand("admin", new admin());
         CommandHandler.registerCommand("test", new test());
+
+        getCommand("pvpzoneleavejajasalu7").setExecutor(new pvpzoneleave());
 
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
@@ -75,10 +82,6 @@ public final class LobbyCore extends JavaPlugin {
 
     public TabManager getTabManager() {
         return tabManager;
-    }
-
-    public ScoreboardManager getScoreboardManager() {
-        return scoreboardManager;
     }
 
     public SpawnManager getSpawnManager() {

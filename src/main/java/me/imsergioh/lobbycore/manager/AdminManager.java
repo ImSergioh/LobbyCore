@@ -1,5 +1,6 @@
 package me.imsergioh.lobbycore.manager;
 
+import me.imsergioh.lobbycore.instance.PvPZone;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;

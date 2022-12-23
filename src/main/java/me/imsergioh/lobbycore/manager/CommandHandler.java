@@ -1,6 +1,7 @@
 package me.imsergioh.lobbycore.manager;
 
 import me.imsergioh.lobbycore.instance.CustomCommand;
+import me.imsergioh.lobbycore.util.ChatUtil;
 import org.bukkit.command.CommandSender;
 
 import java.util.HashMap;
@@ -20,7 +21,11 @@ public class CommandHandler {
             if(label.contains(" ")){
                 args = label.replaceFirst("/"+name+" ", "").split(" ");
             }
-            return commands.get(name).onCommand(sender, label, args);
+            try {
+                return commands.get(name).onCommand(sender, label, args);
+            } catch (Exception e){
+                sender.sendMessage(ChatUtil.chatColor("&4Error ocurred by executing this command"));
+            }
         }
         return false;
     }

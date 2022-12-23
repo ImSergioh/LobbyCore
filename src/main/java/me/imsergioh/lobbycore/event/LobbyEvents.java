@@ -1,6 +1,7 @@
 package me.imsergioh.lobbycore.event;
 
 import me.imsergioh.lobbycore.LobbyCore;
+import me.imsergioh.lobbycore.instance.PvPZone;
 import me.imsergioh.lobbycore.manager.AdminManager;
 import me.imsergioh.lobbycore.manager.ConfigManager;
 import me.imsergioh.spigotcore.handler.MenuHandler;
@@ -8,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -51,6 +53,10 @@ public class LobbyEvents implements Listener {
         Player player = event.getCorePlayer().getPlayer();
 
         updateJoinItemInventory(player);
+
+        if(PvPZone.getZone(player) != null){
+            MenuHandler.getHandler("pvpzone").getCoreMenu("main").setInventory(player);
+        }
     }
 
     @EventHandler
@@ -63,7 +69,7 @@ public class LobbyEvents implements Listener {
         event.setCancelled(ConfigManager.isConfigOnConfig("cancelWeatherChange"));
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onDamage(EntityDamageByEntityEvent event){
         if(event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
@@ -81,7 +87,7 @@ public class LobbyEvents implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onDamage2(EntityDamageEvent event){
         if(event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
