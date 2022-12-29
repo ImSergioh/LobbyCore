@@ -13,7 +13,6 @@ import me.imsergioh.lobbycore.manager.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import us.smartmc.smartcorespigot.SmartCoreSpigot;
 
 public final class LobbyCore extends JavaPlugin {
 

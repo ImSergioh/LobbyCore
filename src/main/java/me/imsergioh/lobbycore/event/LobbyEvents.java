@@ -82,7 +82,6 @@ public class LobbyEvents implements Listener {
         if(event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             event.setCancelled(AdminManager.cancelLobbyEvent(player, "cancelDamage"));
-            player.setHealth(20);
             player.setFoodLevel(20);
         }
     }

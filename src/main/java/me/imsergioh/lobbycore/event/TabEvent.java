@@ -16,20 +16,13 @@ public class TabEvent implements Listener {
     @EventHandler
     public void onReceiveData(PlayerReceivedBackendDataEvent event){
         Player player = event.getCorePlayer().getPlayer();
-        updateTab(player);
+        TabManager.updateAll(player);
     }
 
     @EventHandler
     public void onChangeLanguage(PlayerLanguageChangedEvent event){
         Player player = event.getCorePlayer().getPlayer();
-        updateTab(player);
-    }
-
-    private void updateTab(Player player){
-        if(ConfigManager.isConfigOnConfig("customTagsEnabled")){
-            TabManager.updateTagTeams(player);
-            plugin.getTabManager().sendTablist(player);
-        }
+        TabManager.updateAll(player);
     }
 
 }

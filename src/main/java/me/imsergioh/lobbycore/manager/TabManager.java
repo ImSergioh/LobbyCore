@@ -52,17 +52,21 @@ public class TabManager {
             public void run() {
                 Bukkit.getOnlinePlayers().forEach(player -> {
                     if(CorePlayer.get(player) != null && CorePlayer.get(player).getLanguage() != null) {
-                        sendTablist(player);
-                        if (ConfigManager.isConfigOnConfig("customTagsEnabled")) {
-                            updateTagTeams(player);
-                        }
+                        updateAll(player);
                     }
                 });
             }
         },0, 20*3);
     }
 
-    public static void updateTagTeams(Player player){
+    public static void updateAll(Player player){
+        sendTablist(player);
+        if (ConfigManager.isConfigOnConfig("customTagsEnabled")) {
+            updateTagTeams(player);
+        }
+    }
+
+    private static void updateTagTeams(Player player){
         Scoreboard scoreboard = player.getScoreboard();
         Objective obj;
         if(scoreboard.getObjective("tags") == null) {
@@ -89,7 +93,7 @@ public class TabManager {
         });
     }
 
-    public void sendTablist(Player p){
+    private static void sendTablist(Player p){
         CraftPlayer craftplayer = (CraftPlayer) p;
         PlayerConnection connection = craftplayer.getHandle().playerConnection;
         String headerStr = "";
@@ -121,7 +125,7 @@ public class TabManager {
         connection.sendPacket(packet);
     }
 
-    private String replaceLast(String text, String regex, String replacement) {
+    private static String replaceLast(String text, String regex, String replacement) {
         return text.replaceFirst("(?s)"+regex+"(?!.*?"+regex+")", replacement);
     }
 

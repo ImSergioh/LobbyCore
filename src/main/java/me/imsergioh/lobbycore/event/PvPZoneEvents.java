@@ -12,6 +12,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class PvPZoneEvents implements Listener {
 
@@ -45,6 +47,12 @@ public class PvPZoneEvents implements Listener {
     public void onDeath(PlayerDeathEvent event){
         event.setDeathMessage("");
         event.getDrops().clear();
+
+        if(event.getEntity().getKiller() != null){
+            event.getEntity().getKiller().setHealth(20);
+            Player killer = event.getEntity().getKiller();
+            killer.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*3, 0));
+        }
 
         PvPZone zone = PvPZone.getZone(event.getEntity());
         if(zone != null){
