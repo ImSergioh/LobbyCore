@@ -19,8 +19,6 @@ public final class LobbyCore extends JavaPlugin {
     private static LobbyCore plugin;
 
     private SpawnManager spawnManager;
-    private TabManager tabManager;
-    private TagsManager tagsManager;
 
     private LobbyMenuHandler lobbyMenuHandler;
 
@@ -33,16 +31,6 @@ public final class LobbyCore extends JavaPlugin {
 
         if(ConfigManager.isConfigOnConfig("setCustomTime")){
             new CustomTimeManager(ConfigManager.getMainConfig().config().getLong("customTime"));
-        }
-
-        if(ConfigManager.isConfigOnConfig("customTagsEnabled")){
-            PluginConfig config = new PluginConfig(plugin, "", ConfigManager.getMainConfig().config().getString("customTagsConfigName"));
-            tagsManager = new TagsManager(plugin, config);
-        }
-
-        if(ConfigManager.isConfigOnConfig("customTabEnabled")){
-            PluginConfig config = new PluginConfig(plugin, "", ConfigManager.getMainConfig().config().getString("customTabConfigName"));
-            tabManager = new TabManager(plugin, config);
         }
 
         if(ConfigManager.isConfigOnConfig("joinItemsEnabled")){
@@ -58,7 +46,6 @@ public final class LobbyCore extends JavaPlugin {
         pm.registerEvents(new CustomCommandsEvents(), plugin);
         pm.registerEvents(new LobbyEvents(), plugin);
         pm.registerEvents(new ChatEvent(), plugin);
-        pm.registerEvents(new TabEvent(), plugin);
 
         getCommand("spawn").setExecutor(new spawn());
 
@@ -73,14 +60,6 @@ public final class LobbyCore extends JavaPlugin {
 
     public LobbyMenuHandler getLobbyMenuHandler() {
         return lobbyMenuHandler;
-    }
-
-    public TagsManager getTagsManager() {
-        return tagsManager;
-    }
-
-    public TabManager getTabManager() {
-        return tabManager;
     }
 
     public SpawnManager getSpawnManager() {
